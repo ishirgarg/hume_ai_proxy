@@ -1,0 +1,26 @@
+{
+  "name": "hume-evi-typescript-sample-project",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "-": "^0.0.1",
+    "@types/ws": "^8.5.12",
+    "g": "^2.0.1",
+    "hume": "^0.8.6",
+    "vercel": "^37.11.0",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.2.2",
+    "vite": "^5.1.4"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
