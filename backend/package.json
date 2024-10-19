@@ -1,0 +1,28 @@
+{
+  "name": "hume-evi-typescript-sample-project",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "build": "tsc",
+    "dev": "node server.ts"
+  },
+  "dependencies": {
+    "-": "^0.0.1",
+    "@types/web": "^0.0.173",
+    "@types/ws": "^8.5.12",
+    "dotenv": "^16.4.5",
+    "fs": "0.0.1-security",
+    "g": "^2.0.1",
+    "hume": "^0.8.6",
+    "vercel": "^37.11.0",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3",
+    "vite": "^5.1.4"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

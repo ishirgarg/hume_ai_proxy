@@ -11,10 +11,17 @@ import {
 
 import WebSocket from 'ws';
 
-import './styles.css';
+import * as dotenv from 'dotenv';
 
-const HttpsServer = require('https').createServer;
-const fs = require("fs");
+dotenv.config(); // Load environment variables from .env file
+
+
+import {
+  createServer
+} from 'https';
+import {
+  readFileSync
+} from "fs";
 
 (async () => {
   const startBtn = document.querySelector<HTMLButtonElement>('button#start-btn');
@@ -89,20 +96,45 @@ const fs = require("fs");
     return result.success ? result.mimeType : MimeType.WEBM;
   })();
 
-  // async function connect(): Promise<void> {
-  //   connect_evi()
-  //   connect_twilio()
+  // async function connect_twilio(): Promise<void> {
+    
   // }
 
-  async function connect_twilio(): Promise<void> {
-    twilio_server = HttpsServer({
-      cert: fs.readFileSync("./cert.pem"),
-      key: fs.readFileSync("./key.pem")
+  /**
+   * instantiates interface config and client, sets up Web Socket handlers, and establishes secure Web Socket connection
+   */
+  async function connect(): Promise<void> {
+    // instantiate the HumeClient with credentials to make authenticated requests
+    if (!client) {
+      client = new HumeClient({
+        apiKey: process.env.VITE_HUME_API_KEY || '',
+        secretKey: process.env.VITE_HUME_SECRET_KEY || '',
+      });
+    }
+
+    // instantiates WebSocket and establishes an authenticated connection
+    socket = await client.empathicVoice.chat.connect({
+      configId: process.env.VITE_HUME_CONFIG_ID || '',
+      resumedChatGroupId: chatGroupId,
+    });
+
+    socket.on('open', handleWebSocketOpenEvent);
+    socket.on('message', handleWebSocketMessageEvent);
+    socket.on('error', handleWebSocketErrorEvent);
+    socket.on('close', handleWebSocketCloseEvent);
+
+    // update ui state
+    toggleBtnStates();
+
+    twilio_server = createServer({
+      cert: readFileSync("./cert.pem"),
+      key: readFileSync("./key.pem")
     })
     twilio_socket = new WebSocket.Server({
         server: twilio_server
     });
     
+    alert("Made server")
     twilio_socket.on('connection', (ws: any) => {
       alert('Twilio socket connection established.');
     
@@ -117,34 +149,6 @@ const fs = require("fs");
       });
     });
     twilio_server.listen(8000);
-  }
-
-  /**
-   * instantiates interface config and client, sets up Web Socket handlers, and establishes secure Web Socket connection
-   */
-  async function connect(): Promise<void> {
-    alert("HIHI")
-    // instantiate the HumeClient with credentials to make authenticated requests
-    if (!client) {
-      client = new HumeClient({
-        apiKey: import.meta.env.VITE_HUME_API_KEY || '',
-        secretKey: import.meta.env.VITE_HUME_SECRET_KEY || '',
-      });
-    }
-
-    // instantiates WebSocket and establishes an authenticated connection
-    socket = await client.empathicVoice.chat.connect({
-      configId: import.meta.env.VITE_HUME_CONFIG_ID || null,
-      resumedChatGroupId: chatGroupId,
-    });
-
-    socket.on('open', handleWebSocketOpenEvent);
-    socket.on('message', handleWebSocketMessageEvent);
-    socket.on('error', handleWebSocketErrorEvent);
-    socket.on('close', handleWebSocketCloseEvent);
-
-    // update ui state
-    toggleBtnStates();
   }
 
   /**
