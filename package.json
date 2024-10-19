@@ -6,8 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview",
-    "start": "node dist/assets/index-C6CKIAFm.js"
+    "preview": "vite preview"
   },
   "dependencies": {
     "-": "^0.0.1",

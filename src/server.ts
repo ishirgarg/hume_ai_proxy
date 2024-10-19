@@ -74,21 +74,8 @@ import './styles.css';
   /**
    * Socket to Twilio server
    */
-  // const twilio_socket = new WebSocket.Server({ port: 8000 });
+  let twilio_socket: WebSocket.Server | null = null;
 
-  // twilio_socket.on('connection', (ws: any) => {
-  //   console.log('WebSocket connection established.');
-  
-  //   ws.on('message', (data: any) => {
-  //     console.log('Streaming audio data:', data);
-  //     // Process the incoming audio data here
-  //     alert("Received data")
-  //   });
-  
-  //   ws.on('close', () => {
-  //     console.log('WebSocket connection closed.');
-  //   });
-  // });
   /**
    * mime type supported by the browser the application is running in
    */
@@ -97,10 +84,32 @@ import './styles.css';
     return result.success ? result.mimeType : MimeType.WEBM;
   })();
 
+  async function connect(): Promise<void> {
+    connect_evi()
+    connect_twilio()
+  }
+
+  async function connect_twilio(): Promise<void> {
+    twilio_socket = new WebSocket.Server({ port: 8000 });
+    twilio_socket.on('connection', (ws: any) => {
+      alert('Twilio socket connection established.');
+    
+      ws.on('message', (data: any) => {
+        console.log('Streaming audio data:', data);
+        // Process the incoming audio data here
+        alert("Received data")
+      });
+    
+      ws.on('close', () => {
+        console.log('WebSocket connection closed.');
+      });
+    });
+  }
+
   /**
    * instantiates interface config and client, sets up Web Socket handlers, and establishes secure Web Socket connection
    */
-  async function connect(): Promise<void> {
+  async function connect_evi(): Promise<void> {
     // instantiate the HumeClient with credentials to make authenticated requests
     if (!client) {
       client = new HumeClient({
