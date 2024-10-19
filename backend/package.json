@@ -2,9 +2,11 @@
   "name": "hume-evi-typescript-sample-project",
   "private": true,
   "version": "0.0.0",
+  "type": "module",
   "scripts": {
     "build": "tsc",
-    "dev": "node server.ts"
+    "dev": "node dist/server.js",
+    "start": "node dist/server.js"
   },
   "dependencies": {
     "-": "^0.0.1",
