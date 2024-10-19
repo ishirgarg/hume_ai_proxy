@@ -74,21 +74,21 @@ import './styles.css';
   /**
    * Socket to Twilio server
    */
-  const twilio_socket = new WebSocket.Server({ port: 8000 });
+  // const twilio_socket = new WebSocket.Server({ port: 8000 });
 
-  twilio_socket.on('connection', (ws: any) => {
-    console.log('WebSocket connection established.');
+  // twilio_socket.on('connection', (ws: any) => {
+  //   console.log('WebSocket connection established.');
   
-    ws.on('message', (data: any) => {
-      console.log('Streaming audio data:', data);
-      // Process the incoming audio data here
-      alert("Received data")
-    });
+  //   ws.on('message', (data: any) => {
+  //     console.log('Streaming audio data:', data);
+  //     // Process the incoming audio data here
+  //     alert("Received data")
+  //   });
   
-    ws.on('close', () => {
-      console.log('WebSocket connection closed.');
-    });
-  });
+  //   ws.on('close', () => {
+  //     console.log('WebSocket connection closed.');
+  //   });
+  // });
   /**
    * mime type supported by the browser the application is running in
    */
