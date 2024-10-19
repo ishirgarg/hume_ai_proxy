@@ -13,6 +13,9 @@ import WebSocket from 'ws';
 
 import './styles.css';
 
+const HttpsServer = require('https').createServer;
+const fs = require("fs");
+
 (async () => {
   const startBtn = document.querySelector<HTMLButtonElement>('button#start-btn');
   const stopBtn = document.querySelector<HTMLButtonElement>('button#stop-btn');
@@ -74,6 +77,8 @@ import './styles.css';
   /**
    * Socket to Twilio server
    */
+  let twilio_server;
+
   let twilio_socket: WebSocket.Server | null = null;
 
   /**
@@ -84,13 +89,20 @@ import './styles.css';
     return result.success ? result.mimeType : MimeType.WEBM;
   })();
 
-  async function connect(): Promise<void> {
-    connect_evi()
-    connect_twilio()
-  }
+  // async function connect(): Promise<void> {
+  //   connect_evi()
+  //   connect_twilio()
+  // }
 
   async function connect_twilio(): Promise<void> {
-    twilio_socket = new WebSocket.Server({ port: 8000 });
+    twilio_server = HttpsServer({
+      cert: fs.readFileSync("./cert.pem"),
+      key: fs.readFileSync("./key.pem")
+    })
+    twilio_socket = new WebSocket.Server({
+        server: twilio_server
+    });
+    
     twilio_socket.on('connection', (ws: any) => {
       alert('Twilio socket connection established.');
     
@@ -104,12 +116,14 @@ import './styles.css';
         console.log('WebSocket connection closed.');
       });
     });
+    twilio_server.listen(8000);
   }
 
   /**
    * instantiates interface config and client, sets up Web Socket handlers, and establishes secure Web Socket connection
    */
-  async function connect_evi(): Promise<void> {
+  async function connect(): Promise<void> {
+    alert("HIHI")
     // instantiate the HumeClient with credentials to make authenticated requests
     if (!client) {
       client = new HumeClient({
