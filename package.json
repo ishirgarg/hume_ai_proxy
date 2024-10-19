@@ -6,10 +6,12 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start": "node dist/assets/index-C6CKIAFm.js"
   },
   "dependencies": {
     "-": "^0.0.1",
+    "@types/web": "^0.0.173",
     "@types/ws": "^8.5.12",
     "g": "^2.0.1",
     "hume": "^0.8.6",
@@ -17,7 +19,8 @@
     "ws": "^8.18.0"
   },
   "devDependencies": {
-    "typescript": "^5.2.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3",
     "vite": "^5.1.4"
   },
   "engines": {
