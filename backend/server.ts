@@ -64,12 +64,12 @@ wss.on("connection", (ws) => {
             // Resample to 16000 Hz for Hume AI
             wav.toSampleRate(16000);
     
-            const results = wav.toBuffer()
-            const audioInput: Omit<Hume.empathicVoice.AudioInput, "type"> = {
-              data: Buffer.from(results).toString('base64')
-            };
+            //const results = wav.toBuffer()
+            // const audioInput: Omit<Hume.empathicVoice.AudioInput, "type"> = {
+            //   data: Buffer.from(results).toString('base64')
+            // };
 
-            socket?.sendAudioInput(audioInput)
+            //socket?.sendAudioInput(audioInput)
 
             // Get the PCM samples as Int16Array
             //const samples = wav.getSamples();
