@@ -102,6 +102,8 @@ wss.on("connection", (ws) => {
           data: base64Data,
         };
 
+        console.log("Sending output")
+        console.log("Socket status", socket == null)
         socket?.sendAudioInput(audioInput)
       }
     } catch (error) {
