@@ -99,7 +99,7 @@ wss.on("connection", (ws) => {
               };
     
               console.log("Sending output")
-              console.log("Socket status", socket == null)
+              console.log("Socket is valid", socket != null)
               socket?.sendAudioInput(audioInput)
             }
           }
