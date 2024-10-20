@@ -11,9 +11,9 @@ app.post("/twiml", (req, res) => {
   res.set("Content-Type", "text/xml");
   res.send(`
     <Response>
-      <Start>
+      <Connect>
         <Stream url="wss://${req.headers.host}/"/>
-      </Start>
+      </Connect>
       <Say>H</Say>
       <Pause length="600"/>
     </Response>
@@ -42,6 +42,8 @@ wss.on("connection", function connection(ws) {
         case "media":
           console.log("media")
           const audioBuffer = Buffer.from(msg.media.payload, "base64");
+          console.log("streamSID", stream_sid);
+          console.log("Input len", audioBuffer.length);
           let json_query = {
             "event": "media",
             "streamSid": stream_sid,
@@ -49,6 +51,7 @@ wss.on("connection", function connection(ws) {
               "payload": audioBuffer
             }
           }
+          console.log("Output len", JSON.stringify(json_query).length)
           ws.send(JSON.stringify(json_query))
           break;
         case "stop":
