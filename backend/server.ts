@@ -26,7 +26,7 @@ app.post("/twiml", (req, res) => {
   `);
 });
 
-const PORT = process.env.PORT || 10000;
+const PORT = process.env.PORT || 8000;
 server.listen(PORT, async () => {
   console.log("LISTENING");
   await connect();
