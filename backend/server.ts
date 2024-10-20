@@ -51,7 +51,7 @@ wss.on("connection", (ws) => {
   ws.on("message", async (message: string) => {
     try {
       const msg = JSON.parse(message);
-      console.log("MSG: ", msg);
+      console.log("MSG: ", msg.sequenceNumber, msg.media.payload);
       switch (msg.event) {
         case "connected":
           console.log("connected");
@@ -98,7 +98,7 @@ wss.on("connection", (ws) => {
                 data: base64Data,
               };
     
-              console.log("Sending output")
+              console.log("Sending OUTPUT", base64Data)
               console.log("Socket is valid", socket != null)
               socket?.sendAudioInput(audioInput)
             }
