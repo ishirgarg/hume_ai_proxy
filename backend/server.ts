@@ -15,6 +15,7 @@ app.post("/twiml", (req, res) => {
         <Stream url="wss://${req.headers.host}/"/>
       </Start>
       <Say>H</Say>
+      <Pause length="600"/>
     </Response>
   `);
 });
