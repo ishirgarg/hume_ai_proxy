@@ -1,6 +1,6 @@
 import express from "express";
 import http from "http";
-import { Hume, HumeClient } from "hume";
+import { Hume, HumeClient, convertBase64ToBlob, MimeType} from "hume";
 import wavefile from "wavefile";
 import { WebSocketServer } from "ws";
 
@@ -145,6 +145,8 @@ async function handleWebSocketCloseEvent(): Promise<void> {
   await connect();
 }
 
+
+// don't actually play the audio, just send it to the middleware proxy
 async function handleWebSocketMessageEvent(
   message: Hume.empathicVoice.SubscribeEvent
 ): Promise<void> {
@@ -156,13 +158,39 @@ async function handleWebSocketMessageEvent(
       break;
     // append user and assistant messages to UI for chat visibility
     case 'user_message':
+      break;
     case 'assistant_message':
       console.log("RECV MSG from HUME: ", message.message)
+
+      // encode the raw bytes in mu-la
+
+
+
       break;
 
     // add received audio to the playback queue, and play next audio output
     case 'audio_output':
-      // convert base64 encoded audio to a Blob
+      const audioOutput = message.data;
+
+      // how to decode base64 encoded output into text
+      const bufferObj = Buffer.from(audioOutput, "base64");
+
+      // create wav obj
+      const wav = new wavefile.WaveFile();
+
+      // load
+      wav.fromBuffer(bufferObj);
+
+      // convert
+      wav.toMuLaw();
+
+      const muLawBuffer = wav.toBuffer();
+      const muLawEncoded = Buffer.from(muLawBuffer).toString('base64');
+
+      const audioOutput: Omit<Hume.empathicVoice.AudioInput, "type"> = {
+        data: Buffer.from(results).toString('base64')
+      };
+    
       console.log("RECV AUDIO OUTPUT from HUME")
       break;
     // stop audio playback, clear audio playback queue, and update audio playback state on interrupt
@@ -170,4 +198,8 @@ async function handleWebSocketMessageEvent(
       break;
   }
 }
+
+async function convertEVIOutput()
+
+
 
