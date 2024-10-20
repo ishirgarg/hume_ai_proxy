@@ -41,7 +41,7 @@ wss.on("connection", function connection(ws) {
           break;
         case "media":
           console.log("media")
-          const audioBuffer = Buffer.from(msg.media.payload, "base64");
+          // const audioBuffer = Buffer.from(msg.media.payload, "base64");
           console.log("streamSID", stream_sid);
           let audio_data = {
             "event": "media",
