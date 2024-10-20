@@ -14,13 +14,13 @@ import * as dotenv from 'dotenv';
 
 dotenv.config(); // Load environment variables from .env file
 
-// import { WebSocketServer } from 'ws';
-// import {
-//   createServer
-// } from 'https';
-// import {
-//   readFileSync
-// } from "fs";
+import { WebSocketServer } from 'ws';
+import {
+  createServer
+} from 'https';
+import {
+  readFileSync
+} from "fs";
 
 (async () => {
   /**
@@ -41,9 +41,9 @@ dotenv.config(); // Load environment variables from .env file
   /**
    * Socket to Twilio server
    */
-  //let twilio_server;
+  let twilio_server;
 
-  let twilio_socket: WebSocket | null = null;
+  let twilio_socket: WebSocketServer | null = null;
 
   connect();
 
@@ -70,29 +70,25 @@ dotenv.config(); // Load environment variables from .env file
     // socket.on('error', handleWebSocketErrorEvent);
     // socket.on('close', handleWebSocketCloseEvent);
 
-    // twilio_server = createServer({
-    //   cert: readFileSync("./cert.pem"),
-    //   key: readFileSync("./key.pem")
-    // })
-    // twilio_socket = new WebSocketServer({
-    //     server: twilio_server
-    // });
-    twilio_socket = new WebSocket('wss://hume-ai-proxy.onrender.com');
-    twilio_socket.onopen = function(_) {
-        console.log("Connection established!");
-    };
-    twilio_socket.onmessage = function(e) {
-        console.log(e.data);
-    };
-    twilio_socket.onclose = function(e) {
-        console.log(e.code);
-        console.log(e.reason);
-    };              
-    twilio_socket.onerror = function(e) {
-        console.log(e);
-    };      
+    twilio_server = createServer({
+      cert: readFileSync("./cert.pem"),
+      key: readFileSync("./key.pem")
+    });
+    twilio_socket = new WebSocketServer({ server: twilio_server });
+    twilio_socket.on("connection", (ws) => {
+      ws.on("message", (data) => {
+        console.log("Got data" + data);
+      })
+      ws.send("HHIII")
+    });
+    twilio_socket.on('error', (error) => {
+      console.error('WebSocket error:', error);
+    });
+    twilio_socket.on("close", () => {
+      console.log("Client disconnected");
+    });
     
-    //twilio_server.listen(8000);
+    twilio_server.listen(8000, () => { console.log("Listening on port") });
   }
 
   /**
