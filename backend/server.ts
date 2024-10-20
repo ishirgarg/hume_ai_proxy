@@ -9,18 +9,18 @@
 //   MimeType,
 // } from 'hume';
 
-import { WebSocketServer } from 'ws';
 
 import * as dotenv from 'dotenv';
 
 dotenv.config(); // Load environment variables from .env file
 
-import {
-  createServer
-} from 'https';
-import {
-  readFileSync
-} from "fs";
+// import { WebSocketServer } from 'ws';
+// import {
+//   createServer
+// } from 'https';
+// import {
+//   readFileSync
+// } from "fs";
 
 (async () => {
   /**
@@ -41,9 +41,9 @@ import {
   /**
    * Socket to Twilio server
    */
-  let twilio_server;
+  //let twilio_server;
 
-  let twilio_socket: WebSocketServer | null = null;
+  let twilio_socket: WebSocket | null = null;
 
   connect();
 
@@ -70,26 +70,29 @@ import {
     // socket.on('error', handleWebSocketErrorEvent);
     // socket.on('close', handleWebSocketCloseEvent);
 
-    twilio_server = createServer({
-      cert: readFileSync("./cert.pem"),
-      key: readFileSync("./key.pem")
-    })
-    twilio_socket = new WebSocketServer({
-        server: twilio_server
-    });
+    // twilio_server = createServer({
+    //   cert: readFileSync("./cert.pem"),
+    //   key: readFileSync("./key.pem")
+    // })
+    // twilio_socket = new WebSocketServer({
+    //     server: twilio_server
+    // });
+    twilio_socket = new WebSocket('wss://hume-ai-proxy.onrender.com');
+    twilio_socket.onopen = function(_) {
+        console.log("Connection established!");
+    };
+    twilio_socket.onmessage = function(e) {
+        console.log(e.data);
+    };
+    twilio_socket.onclose = function(e) {
+        console.log(e.code);
+        console.log(e.reason);
+    };              
+    twilio_socket.onerror = function(e) {
+        console.log(e);
+    };      
     
-    twilio_socket.on('connection', (ws: any) => {
-    
-      ws.on('message', (data: any) => {
-        console.log('Streaming audio data:', data);
-        // Process the incoming audio data here
-      });
-    
-      ws.on('close', () => {
-        console.log('WebSocket connection closed.');
-      });
-    });
-    twilio_server.listen(8000);
+    //twilio_server.listen(8000);
   }
 
   /**
