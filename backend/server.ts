@@ -41,7 +41,7 @@ wss.on("connection", (ws) => {
   ws.on("message", async (message: string) => {
     try {
       const msg = JSON.parse(message);
-      console.log("MSG: ", msg.sequenceNumber, msg.media.payload);
+      console.log("MSG recv");
       switch (msg.event) {
         case "connected":
           console.log("connected");
