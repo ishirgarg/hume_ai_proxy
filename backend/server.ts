@@ -69,7 +69,7 @@ wss.on("connection", (ws) => {
               data: Buffer.from(results).toString('base64')
             };
 
-            socket?.sendAudioInput(audioInput)
+            //socket?.sendAudioInput(audioInput)
 
             // Get the PCM samples as Int16Array
             //const samples = wav.getSamples();
