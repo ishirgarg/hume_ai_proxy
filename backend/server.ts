@@ -43,12 +43,11 @@ wss.on("connection", function connection(ws) {
           console.log("media")
           const audioBuffer = Buffer.from(msg.media.payload, "base64");
           console.log("streamSID", stream_sid);
-          console.log("Input len", audioBuffer.length);
           let audio_data = {
             "event": "media",
             "streamSid": stream_sid,
             "media": {
-              "payload": audioBuffer
+              "payload": msg.media.payload
             }
           }
           let mark_data= { 
@@ -58,8 +57,9 @@ wss.on("connection", function connection(ws) {
               "name": "from proxy"
             }
            }
-          console.log("Output len", JSON.stringify(audio_data).length)
-          ws.send(JSON.stringify(audio_data))
+           console.log("AUDIO: ", audio_data)
+           console.log("MARK: ", mark_data)
+           ws.send(JSON.stringify(audio_data))
           ws.send(JSON.stringify(mark_data))
           break;
         case "stop":
