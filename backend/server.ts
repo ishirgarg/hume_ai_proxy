@@ -66,14 +66,11 @@ wss.on("connection", (ws) => {
           break;
       }
 
-      // Decode the Base64 payload from Twilio
-      const audioBuffer = Buffer.from(msg.media.payload, "base64");
-
       // Create a WaveFile instance
       const wav = new wavefile.WaveFile();
 
       // Initialize the WaveFile with the audio buffer
-      wav.fromScratch(1, 8000, "8m", audioBuffer);
+      wav.fromScratch(1, 8000, "8m", msg.media.payload);
 
       // Convert from mu-law to PCM Linear 16
       wav.fromMuLaw();
@@ -105,10 +102,7 @@ wss.on("connection", (ws) => {
           data: base64Data,
         };
 
-        console.log(`SOCKET VALUE ${socket?.sendAudioInput(audioInput)}`);
-
-
-        
+        socket?.sendAudioInput(audioInput)
       }
     } catch (error) {
       console.error("Error processing audio for Hume AI:", error);
