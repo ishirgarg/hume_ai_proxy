@@ -37,6 +37,7 @@ async function connect(): Promise<void> {
   if (!client) {
     client = new HumeClient({
       apiKey: process.env.VITE_HUME_API_KEY || '',
+      secretKey: process.env.VITE_HUME_SECRET_KEY || '',
     });
   }
 
@@ -104,7 +105,7 @@ wss.on("connection", (ws) => {
           data: base64Data,
         };
 
-        // console.log(`SOCKET VALUE ${socket?.sendAudioInput(audioInput)}`);
+        console.log(`SOCKET VALUE ${socket?.sendAudioInput(audioInput)}`);
 
 
         
