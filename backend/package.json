@@ -10,9 +10,13 @@
   },
   "dependencies": {
     "-": "^0.0.1",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
     "@types/web": "^0.0.173",
     "@types/ws": "^8.5.12",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
+    "express": "^4.21.1",
     "fs": "0.0.1-security",
     "g": "^2.0.1",
     "hume": "^0.8.6",
