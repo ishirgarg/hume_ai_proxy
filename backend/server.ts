@@ -64,12 +64,12 @@ wss.on("connection", (ws) => {
             // Resample to 16000 Hz for Hume AI
             wav.toSampleRate(16000);
     
-            //const results = wav.toBuffer()
+            // const results = wav.toBuffer()
             // const audioInput: Omit<Hume.empathicVoice.AudioInput, "type"> = {
             //   data: Buffer.from(results).toString('base64')
             // };
 
-            //socket?.sendAudioInput(audioInput)
+            // socket?.sendAudioInput(audioInput)
 
             // Get the PCM samples as Int16Array
             //const samples = wav.getSamples();
@@ -187,10 +187,6 @@ async function handleWebSocketMessageEvent(
       const muLawBuffer = wav.toBuffer();
       const muLawEncoded = Buffer.from(muLawBuffer).toString('base64');
 
-      const audioOutput: Omit<Hume.empathicVoice.AudioInput, "type"> = {
-        data: Buffer.from(results).toString('base64')
-      };
-    
       console.log("RECV AUDIO OUTPUT from HUME")
       break;
     // stop audio playback, clear audio playback queue, and update audio playback state on interrupt
@@ -199,7 +195,7 @@ async function handleWebSocketMessageEvent(
   }
 }
 
-async function convertEVIOutput()
+// async function convertEVIOutput() { }
 
 
 
