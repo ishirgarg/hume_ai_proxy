@@ -41,6 +41,9 @@ importers:
       hume:
         specifier: ^0.8.6
         version: 0.8.10
+      json:
+        specifier: ^11.0.0
+        version: 11.0.0
       vercel:
         specifier: ^37.11.0
         version: 37.11.0
@@ -1124,6 +1127,11 @@ packages:
 
   json-schema-traverse@1.0.0:
     resolution: {integrity: sha512-NM8/P9n3XjXhIZn1lLhkFaACTOURQXjWhV4BA/RnOv8xvgqtqpAX9IO4mRQxSx1Rlo4tqzeqb0sOlruaOy3dug==}
+
+  json@11.0.0:
+    resolution: {integrity: sha512-N/ITv3Yw9Za8cGxuQqSqrq6RHnlaHWZkAFavcfpH/R52522c26EbihMxnY7A1chxfXJ4d+cEFIsyTgfi9GihrA==}
+    engines: {node: '>=0.10.0'}
+    hasBin: true
 
   jsonfile@4.0.0:
     resolution: {integrity: sha512-m6F1R3z8jjlf2imQHS2Qez5sjKWQzbuuhuJ/FKYFRZvPE3PuHcSMVZzfsLhGVOkfd20obL5SWEBew5ShlquNxg==}
@@ -2851,6 +2859,8 @@ snapshots:
     optional: true
 
   json-schema-traverse@1.0.0: {}
+
+  json@11.0.0: {}
 
   jsonfile@4.0.0:
     optionalDependencies:

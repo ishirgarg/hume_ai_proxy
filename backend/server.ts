@@ -31,6 +31,7 @@ wss.on("connection", function connection(ws) {
   ws.on("message", function incoming(message: string) {
     try {
       const msg = JSON.parse(message);
+      const stream_sid = msg["streamSid"]
       switch (msg.event) {
         case "connected":
           console.log("connected")
@@ -40,7 +41,15 @@ wss.on("connection", function connection(ws) {
           break;
         case "media":
           console.log("media")
-          // const audioBuffer = Buffer.from(msg.media.payload, "base64");
+          const audioBuffer = Buffer.from(msg.media.payload, "base64");
+          let json_query = {
+            "event": "media",
+            "streamSid": stream_sid,
+            "media": {
+              "payload": audioBuffer
+            }
+          }
+          ws.send(JSON.stringify(json_query))
           break;
         case "stop":
           console.log("stopped")
