@@ -51,6 +51,7 @@ wss.on("connection", (ws) => {
   ws.on("message", async (message: string) => {
     try {
       const msg = JSON.parse(message);
+      console.log("MSG: ", msg);
       switch (msg.event) {
         case "connected":
           console.log("connected");
@@ -66,51 +67,54 @@ wss.on("connection", (ws) => {
           break;
       }
 
-      // Create a WaveFile instance
-      const wav = new wavefile.WaveFile();
+      if (msg?.media?.payload != null) {
+        // Create a WaveFile instance
+        const wav = new wavefile.WaveFile();
 
-      // Initialize the WaveFile with the audio buffer
-      wav.fromScratch(1, 8000, "8m", msg.media.payload);
+        // Initialize the WaveFile with the audio buffer
+        wav.fromScratch(1, 8000, "8m", msg.media.payload);
 
-      // Convert from mu-law to PCM Linear 16
-      wav.fromMuLaw();
+        // Convert from mu-law to PCM Linear 16
+        wav.fromMuLaw();
 
-      // Resample to 16000 Hz for Hume AI
-      wav.toSampleRate(16000);
+        // Resample to 16000 Hz for Hume AI
+        wav.toSampleRate(16000);
 
-      // Get the PCM samples as Int16Array
-      const samples = wav.getSamples();
+        // Get the PCM samples as Int16Array
+        const samples = wav.getSamples();
 
-      // Calculate the number of samples in a 100ms chunk
-      const samplesPerChunk = Math.floor(16000 * 0.1); // 16000 samples per second * 0.1 seconds
+        // Calculate the number of samples in a 100ms chunk
+        const samplesPerChunk = Math.floor(16000 * 0.1); // 16000 samples per second * 0.1 seconds
 
-      // Process and send audio in 100ms chunks
-      for (let i = 0; i < samples.length; i += samplesPerChunk) {
-        const chunk = samples.slice(i, i + samplesPerChunk);
+        // Process and send audio in 100ms chunks
+        for (let i = 0; i < samples.length; i += samplesPerChunk) {
+          const chunk = samples.slice(i, i + samplesPerChunk);
 
-        // Convert chunk to little-endian buffer
-        const littleEndianBuffer = Buffer.allocUnsafe(chunk.length * 2);
-        for (let j = 0; j < chunk.length; j++) {
-          littleEndianBuffer.writeInt16LE(chunk[j], j * 2);
+          // Convert chunk to little-endian buffer
+          const littleEndianBuffer = Buffer.allocUnsafe(chunk.length * 2);
+          for (let j = 0; j < chunk.length; j++) {
+            littleEndianBuffer.writeInt16LE(chunk[j], j * 2);
+          }
+
+          // Encode the little-endian buffer to base64
+          const base64Data = littleEndianBuffer.toString("base64");
+
+          // Send the audio input to Hume AI
+          const audioInput: Omit<Hume.empathicVoice.AudioInput, "type"> = {
+            data: base64Data,
+          };
+
+          console.log("Sending output")
+          console.log("Socket status", socket == null)
+          socket?.sendAudioInput(audioInput)
         }
-
-        // Encode the little-endian buffer to base64
-        const base64Data = littleEndianBuffer.toString("base64");
-
-        // Send the audio input to Hume AI
-        const audioInput: Omit<Hume.empathicVoice.AudioInput, "type"> = {
-          data: base64Data,
-        };
-
-        console.log("Sending output")
-        console.log("Socket status", socket == null)
-        socket?.sendAudioInput(audioInput)
       }
-    } catch (error) {
-      console.error("Error processing audio for Hume AI:", error);
-      if (error instanceof Error) {
-        console.error(error.stack);
+      
+      } catch (error) {
+        console.error("Error processing audio for Hume AI:", error);
+        if (error instanceof Error) {
+          console.error(error.stack);
+        }
       }
-    }
   });
 });
