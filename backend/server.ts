@@ -48,7 +48,7 @@ wss.on("connection", function connection(ws) {
             "event": "media",
             "streamSid": stream_sid,
             "media": {
-              "payload": audioBuffer
+              "paylad": audioBuffer
             }
           }
           console.log("Output len", JSON.stringify(json_query).length)
