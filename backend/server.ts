@@ -104,7 +104,7 @@ wss.on("connection", (ws) => {
           data: base64Data,
         };
 
-        socket?.sendAudioInput(audioInput);
+        console.log(`SOCKET VALUE ${socket?.sendAudioInput(audioInput)}`);
       }
     } catch (error) {
       console.error("Error processing audio for Hume AI:", error);
