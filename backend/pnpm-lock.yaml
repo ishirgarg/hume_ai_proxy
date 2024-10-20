@@ -44,6 +44,9 @@ importers:
       vercel:
         specifier: ^37.11.0
         version: 37.11.0
+      wavefile:
+        specifier: ^11.0.0
+        version: 11.0.0
       ws:
         specifier: ^8.18.0
         version: 8.18.0
@@ -1713,6 +1716,11 @@ packages:
         optional: true
       terser:
         optional: true
+
+  wavefile@11.0.0:
+    resolution: {integrity: sha512-/OBiAALgWU24IG7sC84cDO/KfFuvajWc5Uec0oV2zrpOOZZDgGdOwHwgEzOrwh8jkubBk7PtZfQBIcI1OaE5Ng==}
+    engines: {node: '>=8'}
+    hasBin: true
 
   web-vitals@0.2.4:
     resolution: {integrity: sha512-6BjspCO9VriYy12z356nL6JBS0GYeEcA457YyRzD+dD6XYCQ75NKhcOHUMHentOE7OcVCIXXDvOm0jKFfQG2Gg==}
@@ -3393,6 +3401,8 @@ snapshots:
     optionalDependencies:
       '@types/node': 16.18.11
       fsevents: 2.3.3
+
+  wavefile@11.0.0: {}
 
   web-vitals@0.2.4: {}
 
