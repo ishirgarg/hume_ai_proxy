@@ -142,6 +142,7 @@ function handleWebSocketErrorEvent(error: Error): void {
 
 async function handleWebSocketCloseEvent(): Promise<void> {
   console.log('Hume socket connection closed');
+  await connect();
 }
 
 async function handleWebSocketMessageEvent(
